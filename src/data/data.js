@@ -3,8 +3,9 @@ export const personalInfo = {
   role: "Full Stack Developer",
   titles: [
     "React Specialist",
-    "UI/UX Designer",
     "Backend Developer",
+    "UI/UX Designer",
+    "Frontend Developer",
     "Algorithm Enthusiast",
     "Java Developer",
     "Software Tester",
@@ -53,7 +54,14 @@ export const skills = [
   },
   {
     category: "Databases & Tools",
-    items: ["MySQL", "MongoDB", "Docker", "Git", "Postman", "Jenkins"],
+    items: [
+      "MySQL", 
+      "MongoDB", 
+      "Docker", 
+      "Git", 
+      "Postman", 
+      // "Jenkins"
+    ],
     icon: "settings",
   },
   {
@@ -63,7 +71,7 @@ export const skills = [
       "System Design",
       "Microservices",
       "SDLC",
-      "Agile Methodology",
+      // "Agile Methodology",
     ],
     icon: "cpu",
   },
@@ -142,20 +150,20 @@ export const education = [
     institution:
       "Centurion University of Technology and Management, Bhubaneswar, Odisha",
     period: "2022 - 2026",
-    description:
-      "CGPA: 8.79 * 10 (Equivalent to 87.9%) | Domain: Software Technology",
+    description: "Domain: Software Technology",
+    // "CGPA: 8.79 * 10 (Equivalent to 87.9%) | Domain: Software Technology",
   },
   {
     degree: "Intermediate (12th), Science Stream",
     institution: "Pitts Modern School, Gomia, Bokaro (Jharkhand) - 829112",
-    period: "2020 - 2022",
-    description: "Percentage: 70.2%",
+    period: "2021 - 2022",
+    // description: "Percentage: 70.2%",
   },
   {
     degree: "Matriculation (10th)",
     institution: "Pitts Modern School, Gomia, Bokaro (Jharkhand) - 829112",
     period: "2019 - 2020",
-    description: "Percentage: 60.4%",
+    // description: "Percentage: 60.4%",
   },
 ];
 

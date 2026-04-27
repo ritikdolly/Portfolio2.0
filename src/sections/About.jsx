@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { personalInfo } from "../data/data";
+import profileImg from "../images/ritik.jpeg";
 
 const About = () => {
   return (
@@ -23,16 +24,21 @@ const About = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="glass-card p-2 relative group"
+            className="glass-card p-2 relative group w-64 md:w-full max-w-sm mx-auto"
           >
             <div className="aspect-square bg-linear-to-br from-accent-cyan via-accent-violet to-accent-purple rounded-xl overflow-hidden opacity-80 group-hover:opacity-100 transition-opacity">
               {/* Placeholder for actual image if user provided one */}
-              <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-text-muted">
+              {/* <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-text-muted">
                 {personalInfo.name
                   .split(" ")
                   .map((n) => n[0])
                   .join("")}
-              </div>
+              </div> */}
+              <img
+                src={profileImg}
+                alt={personalInfo.name}
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="absolute -inset-1 bg-linear-to-r from-accent-cyan to-accent-purple rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 -z-10" />
           </motion.div>

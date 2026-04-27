@@ -21,14 +21,14 @@ const Hero = () => {
             <h2 className="text-accent-cyan font-medium tracking-widest uppercase mb-4 text-sm">
               Welcome to my portfolio
             </h2>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 font-outfit tracking-tight">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 font-outfit tracking-tight">
               Hi, I'm{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-cyan via-accent-violet to-accent-purple neon-text">
                 {personalInfo.name}
               </span>
             </h1>
 
-            <div className="text-2xl md:text-3xl text-text-muted mb-8 h-12">
+            <div className="text-xl sm:text-2xl md:text-3xl text-text-muted mb-8 h-12">
               <Typewriter
                 words={personalInfo.titles}
                 loop={true}
@@ -59,7 +59,6 @@ const Hero = () => {
                   { icon: Github, href: personalInfo.github },
                   { icon: Linkedin, href: personalInfo.linkedin },
                   { icon: Code2, href: personalInfo.leetcode },
-                  { icon: Mail, href: `mailto:${personalInfo.email}` },
                 ].map((social, i) => (
                   <motion.a
                     key={i}
