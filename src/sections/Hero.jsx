@@ -2,7 +2,14 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import { personalInfo } from "../data/data";
-import { Github, Linkedin, Mail, ArrowRight, Code2 } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  ArrowRight,
+  Code2,
+  FileText,
+} from "lucide-react";
 
 const Hero = () => {
   return (
@@ -44,7 +51,7 @@ const Hero = () => {
               {personalInfo.summary}
             </p>
 
-            <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex flex-wrap justify-center gap-6 focus:outline-none">
               <motion.a
                 href="#projects"
                 whileHover={{ scale: 1.05 }}
@@ -52,6 +59,17 @@ const Hero = () => {
                 className="neon-button flex items-center gap-2"
               >
                 View My Work <ArrowRight size={18} />
+              </motion.a>
+
+              <motion.a
+                href={personalInfo.resumeUrl}
+                target="_blank"
+                rel="noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-8 py-3 rounded-full border border-accent-cyan text-accent-cyan font-bold hover:bg-accent-cyan/10 transition-all duration-300 flex items-center gap-2 neon-border"
+              >
+                View Resume <FileText size={18} />
               </motion.a>
 
               <div className="flex items-center gap-4">

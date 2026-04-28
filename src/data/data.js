@@ -18,7 +18,7 @@ export const personalInfo = {
   summary:
     "Entry-level Software Developer with hands-on experience in building scalable web applications. Passionate about creating premium user experiences and robust backend architectures.",
   resumeUrl:
-    "https://drive.google.com/file/d/12a78QFpBTc9mN7-YO2Qg6Va5ALiMWTVl/view?usp=drive_link", // Placeholder
+    "https://drive.google.com/file/d/1xgNNBvJBtFu-1OzojH1zR__r_M7pUh4G/view?usp=drive_link", // Placeholder
 };
 
 export const skills = [
