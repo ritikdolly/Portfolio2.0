@@ -80,7 +80,7 @@ export const skills = [
 export const projects = [
   {
     id: 1,
-    title: "CodeJudge – Online Coding Assessment Platform",
+    title: "Testavax – Online Coding Assessment Platform",
     description:
       "Built an online coding assessment platform for creating and solving coding tests. Implemented Docker-based code execution for secure compilation and automated evaluation using predefined test cases. Developed REST APIs and scoring logic to track submissions and evaluate student performance.",
     tech: ["React", "Spring Boot", "MySQL", "Docker"],
@@ -89,7 +89,8 @@ export const projects = [
       "Automated evaluation with predefined test cases",
       "REST APIs for tracking submissions",
     ],
-    github: "https://github.com/ritkdolly/CodeJudge",
+    github: "https://github.com/ritikdolly/codeEditorfd",
+    liveUrl: "https://code-editorfd.vercel.app/",
     image:
       "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
     date: "Mar 2026",
@@ -106,6 +107,7 @@ export const projects = [
       "Optimized backend queries",
     ],
     github: "https://github.com/ritkdolly/MentoringApplication",
+    // liveUrl: "https://mentoring-application.vercel.app/",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2026&auto=format&fit=crop",
     date: "Nov 2025",
@@ -115,13 +117,14 @@ export const projects = [
     title: "Face Recognition Attendance System",
     description:
       "Developed a full-stack Face Recognition Attendance System using React.js, Python (Flask), and MongoDB to automate attendance with real-time face recognition. Applied Computer Vision techniques including facial encoding, image processing, and model training on student datasets for accurate identification. Built RESTful APIs and backend automation for course management, student data handling, and attendance storage.",
-    tech: ["Python", "ReactJS", "MongoDB", "Flask"],
+    tech: ["Python", "ReactJS", "MongoDB", "Flask","OpenCV"],
     features: [
       "Real-time face recognition attendance",
       "Computer Vision & facial encoding",
       "Backend automation and course management",
     ],
-    github: "https://github.com/ritkdolly/FaceRecognition",
+    github: "https://github.com/ritikdolly/face_recognition_attendance_system",
+    liveUrl: "#",
     image:
       "https://images.unsplash.com/photo-1472851294608-062f824d29cc?q=80&w=2070&auto=format&fit=crop",
     date: "Apr 2025",
@@ -137,10 +140,28 @@ export const projects = [
       "Improved query performance",
       "Applied design patterns",
     ],
-    github: "https://github.com/ritkdolly/BankingManagement",
+    github: "https://github.com/ritikdolly/BankingSystem",
+    liveUrl: "#",
     image:
       "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?q=80&w=2070&auto=format&fit=crop",
     date: "Oct 2024",
+  },
+  {
+    id: 5,
+    title: "PLH – Full-Stack Food Delivery Platform",
+    description:
+      "A comprehensive food ordering application featuring a seamless delivery experience. Developed with a full-stack architecture to handle secure payments, real-time order tracking, and a dedicated admin panel for restaurant management.",
+    tech: ["React", "Spring Boot", "MySQL", "Tailwind CSS", "Razorpay"],
+    features: [
+      "Secure payment integration with Razorpay",
+      "Real-time order tracking and status updates",
+      "Role-based access (Admin, Customer, Delivery Partner)",
+    ],
+    github: "https://github.com/ritikdolly/PHLAppBD",
+    liveUrl: "#",
+    image:
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=2028&auto=format&fit=crop",
+    date: "Jan 2026",
   },
 ];
 

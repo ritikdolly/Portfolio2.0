@@ -9,7 +9,7 @@ const Projects = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % projects.length);
-    }, 5000); // Rotate every 5 seconds
+    }, 8000); // Rotate every 5 seconds
     return () => clearInterval(timer);
   }, []);
 
@@ -54,7 +54,7 @@ const Projects = () => {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/50 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
-                <div className="absolute bottom-6 left-6 right-6 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-6 left-6 right-6 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="flex gap-4">
                     {projects[currentIndex].github && (
                       <a
@@ -62,8 +62,20 @@ const Projects = () => {
                         target="_blank"
                         rel="noreferrer"
                         className="p-3 bg-glass/20 backdrop-blur-md rounded-full hover:bg-accent-cyan hover:text-primary transition-all text-white shadow-lg"
+                        title="View Source Code"
                       >
                         <Github size={20} />
+                      </a>
+                    )}
+                    {projects[currentIndex].liveUrl && projects[currentIndex].liveUrl !== "#" && (
+                      <a
+                        href={projects[currentIndex].liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="p-3 bg-glass/20 backdrop-blur-md rounded-full hover:bg-accent-cyan hover:text-primary transition-all text-white shadow-lg"
+                        title="View Live Demo"
+                      >
+                        <ExternalLink size={20} />
                       </a>
                     )}
                   </div>
@@ -95,6 +107,31 @@ const Projects = () => {
                       {t}
                     </span>
                   ))}
+                </div>
+
+                <div className="flex flex-wrap gap-4 mb-8">
+                  {projects[currentIndex].github && (
+                    <a
+                      href={projects[currentIndex].github}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-glass/20 hover:bg-accent-cyan hover:text-primary rounded-lg transition-all border border-glass/20 group/btn"
+                    >
+                      <Github size={18} className="group-hover/btn:scale-110 transition-transform" />
+                      <span className="text-sm font-bold">Source Code</span>
+                    </a>
+                  )}
+                  {projects[currentIndex].liveUrl && projects[currentIndex].liveUrl !== "#" && (
+                    <a
+                      href={projects[currentIndex].liveUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-accent-cyan text-primary rounded-lg transition-all border border-accent-cyan/50 hover:bg-transparent hover:text-accent-cyan group/btn"
+                    >
+                      <ExternalLink size={18} className="group-hover/btn:scale-110 transition-transform" />
+                      <span className="text-sm font-bold">Live Demo</span>
+                    </a>
+                  )}
                 </div>
 
                 <ul className="space-y-3">
