@@ -39,7 +39,7 @@ function App() {
               }}
               className="text-4xl font-bold font-outfit neon-text"
             >
-              RK.
+              Ritik Kumar.
             </motion.div>
           </motion.div>
         ) : (

@@ -22,29 +22,28 @@
 
 @layer base {
   :root {
-    --primary-bg: #f8fafc;
-    --secondary-bg: #f1f5f9;
-    --text-color: #0a0a0a;
-    --text-muted: #475569;
+    --primary-bg: #fcfcfd;
+    --secondary-bg: #f3f4f6;
+    --text-color: #111827;
+    --text-muted: #4b5563;
     --glass-base: #000000;
 
-    --accent-cyan: #008ebf;
-    --accent-violet: #2b6cb0;
-    --accent-purple: #553c9a;
+    --accent-cyan: #0284c7; /* Sky 600 */
+    --accent-violet: #4f46e5; /* Indigo 600 */
+    --accent-purple: #9333ea; /* Purple 600 */
   }
 
   .dark {
-    /* Tailwind prefers-color-scheme logic uses this context */
     color-scheme: dark;
-    --primary-bg: #0a0a0a;
-    --secondary-bg: #1a1a1a;
-    --text-color: #ffffff;
-    --text-muted: #9ca3af;
+    --primary-bg: #020617; /* Slate 950 */
+    --secondary-bg: #0f172a; /* Slate 900 */
+    --text-color: #f8fafc;
+    --text-muted: #94a3b8;
     --glass-base: #ffffff;
 
-    --accent-cyan: #00f2fe;
-    --accent-violet: #4facfe;
-    --accent-purple: #7f00ff;
+    --accent-cyan: #38bdf8; /* Sky 400 */
+    --accent-violet: #818cf8; /* Indigo 400 */
+    --accent-purple: #c084fc; /* Purple 400 */
   }
 
   body {
@@ -78,19 +77,19 @@
 
 /* Neon Glow Utilities */
 @utility neon-text {
-  text-shadow: 0 0 10px rgba(0, 242, 254, 0.5), 0 0 20px rgba(0, 242, 254, 0.3);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--accent-cyan) 40%, transparent), 0 0 20px color-mix(in srgb, var(--accent-cyan) 20%, transparent);
 }
 
 @utility neon-border {
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--accent-cyan) 20%, transparent);
 }
 
 @utility neon-button {
-  @apply px-8 py-3 rounded-full bg-neon-gradient text-primary font-bold transition-all duration-300 transform active:scale-95;
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+  @apply px-8 py-3 rounded-full bg-neon-gradient text-white font-bold transition-all duration-300 transform active:scale-95;
+  box-shadow: 0 10px 25px -5px color-mix(in srgb, var(--accent-cyan) 40%, transparent);
 
   &:hover {
-    box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
+    box-shadow: 0 15px 30px -5px color-mix(in srgb, var(--accent-cyan) 60%, transparent);
     @apply -translate-y-1;
   }
 }
@@ -103,16 +102,17 @@
   width: 100%;
   height: 100%;
   z-index: -1;
-  background: radial-gradient(circle at 0% 0%, rgba(0, 242, 254, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(127, 0, 255, 0.05) 0%, transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(79, 172, 254, 0.03) 0%, transparent 50%);
+  background: 
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--accent-cyan) 8%, transparent) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, color-mix(in srgb, var(--accent-purple) 8%, transparent) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--accent-violet) 5%, transparent) 0%, transparent 50%);
 }
 
 /* Custom Cursor Styling */
 @utility custom-cursor {
   width: 20px;
   height: 20px;
-  background: var(--color-accent-cyan);
+  background: var(--accent-cyan);
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
@@ -124,7 +124,7 @@
 @utility custom-cursor-follower {
   width: 40px;
   height: 40px;
-  border: 2px solid var(--color-accent-cyan);
+  border: 2px solid var(--accent-cyan);
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
@@ -138,10 +138,10 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  @apply bg-secondary;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, var(--color-accent-cyan), var(--color-accent-violet));
+  background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-violet));
   border-radius: 10px;
 }

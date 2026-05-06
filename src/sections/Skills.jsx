@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { skills } from "../data/data";
-import { Code, Layers, Database, Settings, Cpu } from "lucide-react";
+import { Code, Layers, Database, Settings, Cpu, CheckCircle } from "lucide-react";
 
 const iconMap = {
   code: Code,
@@ -9,6 +9,7 @@ const iconMap = {
   database: Database,
   settings: Settings,
   cpu: Cpu,
+  check: CheckCircle,
 };
 
 const Skills = () => {
@@ -22,7 +23,7 @@ const Skills = () => {
         className="text-center mb-16"
       >
         <h2 className="text-4xl font-bold font-outfit mb-4">
-          Skills & expertise
+          Skills & <span className="text-accent-cyan">Expertise</span>
         </h2>
         <div className="w-20 h-1 bg-accent-cyan mx-auto rounded-full" />
       </motion.div>
@@ -37,21 +38,24 @@ const Skills = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card group"
+              className="p-8 rounded-3xl bg-glass/5 border border-glass/10 hover:border-accent-cyan/30 transition-all duration-500 group relative overflow-hidden"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-accent-cyan/10 rounded-xl group-hover:bg-accent-cyan group-hover:text-primary transition-all duration-300">
-                  <Icon size={24} />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-accent-cyan/5 rounded-bl-full -z-10 group-hover:bg-accent-cyan/10 transition-colors" />
+              
+              <div className="flex items-center gap-5 mb-8">
+                <div className="p-4 bg-accent-cyan/10 rounded-2xl text-accent-cyan group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
+                  <Icon size={28} />
                 </div>
-                <h3 className="text-xl font-bold font-outfit">
+                <h3 className="text-2xl font-bold font-outfit text-text-main group-hover:text-accent-cyan transition-colors">
                   {skillGroup.category}
                 </h3>
               </div>
+
               <div className="flex flex-wrap gap-2">
                 {skillGroup.items.map((item, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 bg-glass/5 border border-glass/10 rounded-full text-sm text-text-muted group-hover:border-accent-cyan/30 transition-colors"
+                    className="px-4 py-1.5 bg-primary/50 border border-glass/10 rounded-xl text-sm font-medium text-text-muted hover:text-accent-cyan hover:border-accent-cyan/30 transition-all duration-300"
                   >
                     {item}
                   </span>

@@ -18,20 +18,22 @@ export const personalInfo = {
   summary:
     "Entry-level Software Developer with hands-on experience in building scalable web applications. Passionate about creating premium user experiences and robust backend architectures.",
   resumeUrl:
-    "https://drive.google.com/file/d/1xgNNBvJBtFu-1OzojH1zR__r_M7pUh4G/view?usp=drive_link", // Placeholder
+    "https://drive.google.com/file/d/1uzTsbknSmtLJsIVcwQ0rZfaPa2Phfbrz/view?usp=drive_link", // Placeholder
 };
 
 export const skills = [
   {
     category: "Languages",
+    description: "Proficient in multiple programming languages, focusing on clean and efficient code.",
     items: ["Java", "C", "Python", "JavaScript"],
     icon: "code",
   },
   {
     category: "Frontend",
+    description: "Building responsive and interactive UIs using modern frameworks and styling libraries.",
     items: [
       "ReactJS",
-      "Next.js",
+      "Angular",
       "HTML",
       "CSS",
       "Tailwind CSS",
@@ -42,36 +44,48 @@ export const skills = [
   },
   {
     category: "Backend",
+    description: "Developing robust server-side logic and scalable REST APIs with Spring Boot.",
     items: [
       "Spring Boot",
       "Spring MVC",
-      "Node.js",
-      "Express",
+      "Spring Security",
       "REST APIs",
       "Hibernate",
     ],
     icon: "database",
   },
   {
+    category: "Quality & Testing",
+    description: "Ensuring application reliability through rigorous manual testing and quality assurance.",
+    items: [
+      "Manual Testing",
+      "Bug Tracking",
+      "Test Case Design",
+      "STLC",
+      "SDLC Integration",
+    ],
+    icon: "check",
+  },
+  {
     category: "Databases & Tools",
+    description: "Managing data efficiently and utilizing tools for seamless development workflows.",
     items: [
       "MySQL", 
       "MongoDB", 
       "Docker", 
       "Git", 
-      "Postman", 
-      // "Jenkins"
+      "Postman",
     ],
     icon: "settings",
   },
   {
     category: "Core Concepts",
+    description: "Strong grasp of CS fundamentals for building scalable and optimized systems.",
     items: [
       "Data Structures and Algorithms",
       "System Design",
       "Microservices",
       "SDLC",
-      // "Agile Methodology",
     ],
     icon: "cpu",
   },
@@ -178,7 +192,7 @@ export const education = [
     degree: "Intermediate (12th), Science Stream",
     institution: "Pitts Modern School, Gomia, Bokaro (Jharkhand) - 829112",
     period: "2021 - 2022",
-    // description: "Percentage: 70.2%",
+    description: "Subject: PCMCs.",
   },
   {
     degree: "Matriculation (10th)",
