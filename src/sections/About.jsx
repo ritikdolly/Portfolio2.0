@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { personalInfo } from "../data/data";
-import profileImg from "../images/ritik.jpeg";
+import profileImg from "../images/ritik.jpg";
 
 const About = () => {
   return (
@@ -50,7 +50,7 @@ const About = () => {
             transition={{ duration: 0.8 }}
           >
             <h3 className="text-2xl font-bold font-outfit mb-4 text-accent-cyan">
-              Full Stack Developer & Passionate Problem Solver
+              Full Stack Developer & Problem Solver
             </h3>
             <p className="text-text-muted leading-relaxed mb-6">
               {personalInfo.summary}

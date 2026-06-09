@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { education } from "../data/data";
-import { GraduationCap, Calendar, MapPin } from "lucide-react";
+import { GraduationCap, Calendar, MapPin, ExternalLink } from "lucide-react";
 
 const Education = () => {
   return (
@@ -63,6 +63,20 @@ const Education = () => {
                   <p className="text-text-muted text-sm leading-relaxed">
                     {edu.description}
                   </p>
+
+                  {edu.resultLink && (
+                    <div className="mt-4">
+                      <a
+                        href={edu.resultLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/30 hover:bg-accent-cyan/20 hover:border-accent-cyan/60 transition-all duration-300"
+                      >
+                        <ExternalLink size={14} />
+                        View Result
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -115,7 +115,7 @@ const Contact = () => {
                 {
                   icon: MapPin,
                   label: "Location",
-                  value: "Hyderabad, Telangana, India",
+                  value: "Bengaluru, Karnataka, India",
                   href: "#",
                 },
               ].map((item, i) => (
@@ -197,7 +197,7 @@ const Contact = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="john@example.com"
+                    placeholder="ritik@example.com"
                     disabled={status === "sending"}
                     className="w-full px-6 py-4 bg-glass/5 border border-glass/10 rounded-2xl outline-none focus:border-accent-cyan transition-colors text-text-main disabled:opacity-50"
                   />

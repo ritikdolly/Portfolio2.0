@@ -35,7 +35,7 @@ const Projects = () => {
         className="text-center mb-16"
       >
         <h2 className="text-4xl md:text-5xl font-bold font-outfit mb-4">
-          Featured <span className="text-accent-cyan">Projects</span>
+          Real-World <span className="text-accent-cyan">Projects</span>
         </h2>
         <div className="w-24 h-1.5 bg-accent-cyan mx-auto rounded-full shadow-[0_0_15px_rgba(0,242,254,0.5)]" />
       </motion.div>
