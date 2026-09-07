@@ -1,132 +1,212 @@
-import React, { useEffect, useRef } from "react";
-import { gsap, ease, make3DTilt } from "../utils/gsap";
+import React, { useEffect, useRef, useState } from "react";
+import { gsap, ScrollTrigger, ease, infiniteMarquee, clipTextReveal, make3DTilt } from "../utils/gsap";
 import { skills } from "../data/data";
 import { Code, Layers, Database, Settings, Cpu, CheckCircle } from "lucide-react";
 
-const iconMap = {
+const ICON_MAP = {
   code: Code, layers: Layers, database: Database,
   settings: Settings, cpu: Cpu, check: CheckCircle,
 };
 
+/* Marquee ticker items */
+const TICKER_ITEMS = [
+  "Java", "React", "Spring Boot", "Docker", "MySQL",
+  "Python", "MongoDB", "TypeScript", "REST APIs", "Tailwind CSS",
+];
+
 const Skills = () => {
-  const sectionRef = useRef(null);
-  const headingRef = useRef(null);
-  const cardsRef = useRef([]);
+  const sectionRef  = useRef(null);
+  const headingRef  = useRef(null);
+  const marqueeRef  = useRef(null);
+  const trackRef    = useRef(null);
+  const outerRef    = useRef(null);
+  const cardsRef    = useRef([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  /* Detect mobile once on mount */
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // ── Heading ──
-      gsap.fromTo(
-        headingRef.current,
-        { autoAlpha: 0, y: 40 },
-        {
-          autoAlpha: 1, y: 0, duration: 0.75, ease: ease.back,
-          scrollTrigger: { trigger: headingRef.current, start: "top 88%", once: true },
-        }
-      );
 
-      // ── 3D flip card entrance + tag pop + icon pulse ──
-      cardsRef.current.forEach((card, i) => {
-        if (!card) return;
+      /* ── Heading clip reveal ── */
+      clipTextReveal(headingRef.current, { start: "top 85%" });
 
-        // Card 3D flip in
-        gsap.fromTo(
-          card,
-          { autoAlpha: 0, rotateY: 90, scale: 0.85 },
+      /* ── Marquee ticker ── */
+      if (marqueeRef.current) infiniteMarquee(marqueeRef.current, 20);
+
+      /* ── Mobile: simple batch reveal ── */
+      if (isMobile || window.innerWidth < 768) {
+        cardsRef.current.filter(Boolean).forEach((card, i) => {
+          gsap.fromTo(card,
+            { autoAlpha: 0, y: 50 },
+            { autoAlpha: 1, y: 0, duration: 0.65, delay: i * 0.08, ease: ease.back,
+              scrollTrigger: { trigger: card, start: "top 88%", toggleActions: "play reverse play reverse" },
+            }
+          );
+        });
+        return;
+      }
+
+      /* ── Desktop: Pinned horizontal scroll ── */
+      const track = trackRef.current;
+      const outer = outerRef.current;
+      if (!track || !outer) return;
+
+      // Let browser measure the full scrollable width
+      const getScrollDist = () => track.scrollWidth - window.innerWidth + 128; // 128 = padding
+
+      const horizontalTween = gsap.to(track, {
+        x: () => -getScrollDist(),
+        ease: "none",
+        scrollTrigger: {
+          trigger: outer,
+          pin: true,
+          start: "top top",
+          end: () => `+=${getScrollDist()}`,
+          scrub: 1.2,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        },
+      });
+
+      /* Card reveals inside the horizontal scroll */
+      cardsRef.current.filter(Boolean).forEach((card) => {
+        gsap.fromTo(card,
+          { autoAlpha: 0, rotateY: 45, scale: 0.85 },
           {
             autoAlpha: 1, rotateY: 0, scale: 1,
-            duration: 0.75, delay: i * 0.08,
-            ease: ease.back, transformPerspective: 900,
-            scrollTrigger: { trigger: card, start: "top 88%", once: true },
+            duration: 0.7, ease: ease.back,
+            transformPerspective: 1000,
+            scrollTrigger: {
+              trigger: card,
+              containerAnimation: horizontalTween,
+              start: "left 90%",
+              toggleActions: "play reverse play reverse",
+            },
           }
         );
 
-        // Tags pop in
-        const tags = card.querySelectorAll(".skill-tag");
-        gsap.fromTo(
-          tags,
-          { autoAlpha: 0, scale: 0.6 },
-          {
-            autoAlpha: 1, scale: 1,
-            duration: 0.35, stagger: 0.04, ease: ease.back,
-            delay: i * 0.08 + 0.4,
-            scrollTrigger: { trigger: card, start: "top 88%", once: true },
-          }
-        );
-
-        // Icon looping pulse
-        const icon = card.querySelector(".skill-icon");
-        if (icon) {
-          gsap.to(icon, {
-            scale: 1.1, duration: 1.8, repeat: -1, yoyo: true,
-            ease: "sine.inOut", delay: i * 0.3,
-          });
-        }
-
-        // 3D tilt hover
+        /* 3D tilt hover */
         const cleanup = make3DTilt(card, { maxRotate: 8, scale: 1.03 });
         card._gsapTiltCleanup = cleanup;
       });
+
     }, sectionRef);
+
+    /* Refresh on resize to recalculate horizontal scroll distances */
+    const onResize = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", onResize);
 
     return () => {
       ctx.revert();
-      cardsRef.current.forEach((card) => {
-        if (card?._gsapTiltCleanup) card._gsapTiltCleanup();
-      });
+      window.removeEventListener("resize", onResize);
+      cardsRef.current.forEach((c) => c?._gsapTiltCleanup?.());
     };
-  }, []);
+  }, [isMobile]);
+
+  /* ── JSX ── */
+  const isMobileLayout = isMobile || (typeof window !== "undefined" && window.innerWidth < 768);
 
   return (
-    <div ref={sectionRef} className="container mx-auto px-6">
-      {/* Heading — no overflow:hidden */}
-      <div className="text-center mb-16">
-        <h2
-          ref={headingRef}
-          className="text-4xl font-bold font-outfit mb-4"
-          style={{ visibility: "visible" }}
-        >
-          Skills &amp; <span className="text-accent-cyan">Expertise</span>
-        </h2>
-        <div className="w-20 h-1 bg-accent-cyan mx-auto rounded-full" />
+    <div ref={sectionRef}>
+
+      {/* Heading + Marquee — always visible */}
+      <div className="container mx-auto px-6 mb-12">
+        <div className="text-center mb-12">
+          <div ref={headingRef} style={{ visibility: "visible" }}>
+            <h2 className="section-heading text-4xl sm:text-5xl md:text-6xl font-black justify-center mb-4">
+              <span className="clip-wrap"><span className="clip-inner">Skills</span></span>
+              {" "}&amp;{" "}
+              <span className="clip-wrap"><span className="clip-inner text-accent-cyan">Expertise</span></span>
+            </h2>
+          </div>
+          <div className="w-20 h-1 bg-gradient-to-r from-accent-cyan to-accent-violet mx-auto rounded-full" />
+        </div>
+
+        {/* ── Marquee ticker ── */}
+        <div className="marquee-outer py-4 mb-8">
+          <div ref={marqueeRef} className="marquee-track">
+            {TICKER_ITEMS.map((item, i) => (
+              <div key={i} className="marquee-item">
+                <span className="text-accent-cyan text-lg">✦</span>
+                <span className="text-sm font-bold tracking-widest text-text-muted uppercase">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {skills.map((skillGroup, index) => {
-          const Icon = iconMap[skillGroup.icon] || Code;
-          return (
-            <div
-              key={index}
-              ref={(el) => (cardsRef.current[index] = el)}
-              className="p-8 rounded-3xl bg-glass/5 border border-glass/10 hover:border-accent-cyan/30 transition-colors duration-500 group relative overflow-hidden"
-              style={{ willChange: "transform", transformStyle: "preserve-3d", visibility: "visible" }}
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-accent-cyan/5 rounded-bl-full -z-10 group-hover:bg-accent-cyan/10 transition-colors" />
-
-              <div className="flex items-center gap-5 mb-8">
-                <div className="skill-icon p-4 bg-accent-cyan/10 rounded-2xl text-accent-cyan shadow-lg">
-                  <Icon size={28} />
-                </div>
-                <h3 className="text-2xl font-bold font-outfit text-text-main group-hover:text-accent-cyan transition-colors">
-                  {skillGroup.category}
-                </h3>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {skillGroup.items.map((item, i) => (
-                  <span
+      {/* ── Desktop: horizontal scroll outer pin ── */}
+      {!isMobileLayout ? (
+        <div ref={outerRef} className="h-scroll-outer w-full" style={{ visibility: "visible" }}>
+          <div className="flex items-center h-screen px-16">
+            <div ref={trackRef} className="h-scroll-track">
+              {skills.map((sg, i) => {
+                const Icon = ICON_MAP[sg.icon] || Code;
+                return (
+                  <div
                     key={i}
-                    className="skill-tag px-4 py-1.5 bg-primary/50 border border-glass/10 rounded-xl text-sm font-medium text-text-muted hover:text-accent-cyan hover:border-accent-cyan/30 transition-all duration-300"
-                    style={{ visibility: "visible" }}
+                    ref={(el) => (cardsRef.current[i] = el)}
+                    className="h-scroll-card glass-card flex flex-col gap-6 hover:border-accent-cyan/40 transition-colors h-[300px]"
+                    style={{ willChange: "transform", transformStyle: "preserve-3d", visibility: "visible" }}
                   >
-                    {item}
-                  </span>
-                ))}
-              </div>
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-accent-cyan/10 rounded-xl text-accent-cyan">
+                        <Icon size={26} />
+                      </div>
+                      <h3 className="text-xl font-bold font-outfit">{sg.category}</h3>
+                    </div>
+                    <p className="text-text-muted text-sm leading-relaxed">{sg.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-auto">
+                      {sg.items.map((item, j) => (
+                        <span key={j}
+                          className="px-3 py-1.5 bg-primary/50 border border-glass/10 rounded-xl text-xs font-semibold text-text-muted hover:text-accent-cyan hover:border-accent-cyan/30 transition-all"
+                          style={{ visibility: "visible" }}
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
+          </div>
+        </div>
+      ) : (
+        /* ── Mobile: vertical grid ── */
+        <div className="container mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {skills.map((sg, i) => {
+            const Icon = ICON_MAP[sg.icon] || Code;
+            return (
+              <div
+                key={i}
+                ref={(el) => (cardsRef.current[i] = el)}
+                className="glass-card flex flex-col gap-5 hover:border-accent-cyan/40 transition-colors"
+                style={{ visibility: "visible" }}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-accent-cyan/10 rounded-xl text-accent-cyan"><Icon size={22} /></div>
+                  <h3 className="text-lg font-bold font-outfit">{sg.category}</h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {sg.items.map((item, j) => (
+                    <span key={j}
+                      className="px-3 py-1 bg-primary/50 border border-glass/10 rounded-lg text-xs font-semibold text-text-muted"
+                      style={{ visibility: "visible" }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

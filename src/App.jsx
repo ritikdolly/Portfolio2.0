@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { gsap } from "./utils/gsap";
+import { gsap, ScrollTrigger } from "./utils/gsap";
 import Navbar from "./components/Navbar";
 import CustomCursor from "./components/CustomCursor";
 import Hero from "./sections/Hero";
@@ -11,96 +11,101 @@ import Certifications from "./sections/Certifications";
 import Contact from "./sections/Contact";
 
 // ── Loader ─────────────────────────────────────────────────────────────────
-const LOADER_TEXT = "Ritik Kumar.";
+const LOADER_WORD = "RITIK.";
 
 function Loader({ onComplete }) {
   const lettersRef = useRef([]);
-  const barRef = useRef(null);
-  const containerRef = useRef(null);
+  const barRef     = useRef(null);
+  const wrapRef    = useRef(null);
 
   useEffect(() => {
-    // Safety fallback: if GSAP fails for any reason, still dismiss after 3s
-    const safetyTimer = setTimeout(() => {
-      if (containerRef.current) {
-        containerRef.current.style.opacity = "0";
-        containerRef.current.style.pointerEvents = "none";
-      }
-      onComplete();
-    }, 3500);
+    // Safety: always dismiss within 4s even if GSAP fails
+    const safety = setTimeout(() => onComplete(), 4000);
 
     const tl = gsap.timeline({
       onComplete: () => {
-        clearTimeout(safetyTimer);
-        // Fade out loader
-        gsap.to(containerRef.current, {
-          autoAlpha: 0,
-          duration: 0.5,
-          ease: "power2.inOut",
-          onComplete,
+        clearTimeout(safety);
+        gsap.to(wrapRef.current, {
+          autoAlpha: 0, duration: 0.5, ease: "power2.inOut", onComplete,
         });
       },
     });
 
-    // Use fromTo so letters always end at opacity:1
     tl.fromTo(
       lettersRef.current.filter(Boolean),
-      { y: 60, autoAlpha: 0 },
-      { y: 0, autoAlpha: 1, duration: 0.06, stagger: 0.05, ease: "back.out(2)" }
+      { y: 80, autoAlpha: 0, rotateX: -90 },
+      { y: 0,  autoAlpha: 1, rotateX: 0,
+        duration: 0.07, stagger: 0.055, ease: "back.out(2)",
+        transformPerspective: 600,
+      }
     )
-      // Loading bar fills
-      .fromTo(
-        barRef.current,
+      .fromTo(barRef.current,
         { scaleX: 0 },
-        { scaleX: 1, duration: 1, ease: "power3.inOut", transformOrigin: "left" },
+        { scaleX: 1, duration: 1.1, ease: "power3.inOut", transformOrigin: "left" },
         "-=0.2"
       )
-      // Letters exit upward
-      .to(
-        lettersRef.current.filter(Boolean),
-        { y: -60, autoAlpha: 0, duration: 0.05, stagger: 0.04, ease: "power2.in" }
+      .to(lettersRef.current.filter(Boolean),
+        { y: -80, autoAlpha: 0, duration: 0.055, stagger: 0.04, ease: "power2.in" }
       );
 
-    return () => {
-      clearTimeout(safetyTimer);
-      tl.kill();
-    };
+    return () => { clearTimeout(safety); tl.kill(); };
   }, [onComplete]);
 
   return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-primary"
+    <div ref={wrapRef}
+      className="fixed inset-0 z-[300] flex flex-col items-center justify-center bg-primary"
     >
-      {/* Background orbs */}
-      <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-accent-cyan/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/3 left-1/4 w-80 h-80 bg-accent-cyan/10 rounded-full blur-3xl" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-purple/10 rounded-full blur-3xl" />
 
       <div className="relative z-10 text-center">
-        {/* Letters — NO overflow:hidden on the wrapper */}
-        <div className="flex items-center justify-center text-4xl sm:text-6xl font-black font-outfit tracking-tight mb-10">
-          {LOADER_TEXT.split("").map((char, i) => (
+        {/* Letters */}
+        <div
+          className="flex items-center justify-center text-5xl sm:text-7xl font-black font-outfit tracking-widest mb-12"
+          style={{ perspective: "600px" }}
+        >
+          {LOADER_WORD.split("").map((ch, i) => (
             <span
               key={i}
               ref={(el) => (lettersRef.current[i] = el)}
               style={{ display: "inline-block", opacity: 0 }}
-              className={char === "." ? "text-accent-cyan" : ""}
+              className={ch === "." ? "text-accent-cyan" : ""}
             >
-              {char === " " ? "\u00A0" : char}
+              {ch === " " ? "\u00A0" : ch}
             </span>
           ))}
         </div>
 
         {/* Loading bar */}
-        <div className="w-48 sm:w-64 h-[2px] bg-glass/10 mx-auto rounded-full overflow-hidden">
+        <div className="w-40 sm:w-64 h-[2px] bg-glass/10 mx-auto rounded-full overflow-hidden">
           <div
             ref={barRef}
-            className="h-full bg-gradient-to-r from-accent-cyan via-accent-violet to-accent-purple rounded-full"
-            style={{ transformOrigin: "left", scaleX: 0 }}
+            className="h-full w-full bg-gradient-to-r from-accent-cyan via-accent-violet to-accent-purple rounded-full"
+            style={{ transformOrigin: "left", transform: "scaleX(0)" }}
           />
         </div>
+        <p className="text-text-muted/40 text-xs tracking-[0.3em] uppercase mt-4">
+          Loading portfolio
+        </p>
       </div>
     </div>
   );
+}
+
+// ── Scroll progress bar (fixed top) ───────────────────────────────────────
+function ScrollProgressBar() {
+  const barRef = useRef(null);
+  useEffect(() => {
+    const update = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      if (h > 0 && barRef.current) {
+        gsap.set(barRef.current, { scaleX: window.scrollY / h });
+      }
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+  return <div ref={barRef} className="scroll-progress-bar" />;
 }
 
 // ── Main App ───────────────────────────────────────────────────────────────
@@ -108,62 +113,51 @@ function App() {
   const [loading, setLoading] = useState(true);
   const mainRef = useRef(null);
 
-  const handleLoaderDone = () => {
-    setLoading(false);
-  };
+  const handleLoaderDone = () => setLoading(false);
 
-  // Reveal main content after loader dismisses
   useEffect(() => {
     if (!loading && mainRef.current) {
-      // Make sure it's visible first, then animate
-      gsap.set(mainRef.current, { autoAlpha: 1 });
+      // Curtain wipe: reveal from top
       gsap.fromTo(
         mainRef.current,
-        { y: 20, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.8, ease: "power3.out" }
+        { clipPath: "inset(100% 0 0 0)", autoAlpha: 1 },
+        { clipPath: "inset(0% 0 0 0)", duration: 1.1, ease: "expo.out",
+          onComplete: () => ScrollTrigger.refresh(),
+        }
       );
     }
   }, [loading]);
 
   return (
     <div className="relative min-h-screen bg-primary">
-      {/* Loader — shown while loading */}
       {loading && <Loader onComplete={handleLoaderDone} />}
 
-      {/* Main content — always in DOM but invisible until loader done */}
       <main
         ref={mainRef}
         className="relative z-10"
         style={{ visibility: loading ? "hidden" : "visible" }}
       >
         <div className="bg-mesh" />
+        <ScrollProgressBar />
         <CustomCursor />
         <Navbar />
 
         <section id="hero">
           <Hero />
         </section>
-        <section id="about" className="py-20">
-          <About />
-        </section>
-        <section id="skills" className="py-20">
-          <Skills />
-        </section>
-        <section id="projects" className="py-20">
-          <Projects />
-        </section>
-        <section id="education" className="py-20">
-          <Education />
-        </section>
-        <section id="certifications" className="py-20">
-          <Certifications />
-        </section>
-        <section id="contact" className="py-20">
-          <Contact />
-        </section>
+        <section id="about"          className="py-24 sm:py-32"><About /></section>
+        <section id="skills"         className="py-24 sm:py-32"><Skills /></section>
+        <section id="projects"       className="py-24 sm:py-32"><Projects /></section>
+        <section id="education"      className="py-24 sm:py-32"><Education /></section>
+        <section id="certifications" className="py-24 sm:py-32"><Certifications /></section>
+        <section id="contact"        className="py-24 sm:py-32"><Contact /></section>
 
-        <footer className="py-10 text-center text-text-muted glass-effect border-t-0 border-r-0 border-l-0">
-          <p>© {new Date().getFullYear()} Ritik Kumar. All rights reserved.</p>
+        <footer className="py-12 text-center text-text-muted border-t border-glass/10">
+          <p className="text-sm tracking-wider">
+            © {new Date().getFullYear()} &nbsp;
+            <span className="text-accent-cyan font-bold">Ritik Kumar</span>
+            &nbsp;· All rights reserved.
+          </p>
         </footer>
       </main>
     </div>
